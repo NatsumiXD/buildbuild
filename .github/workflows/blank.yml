@@ -1,4 +1,4 @@
-name: Build and Commit
+name: Build and Upload Artifacts
 
 on:
   workflow_dispatch:
@@ -21,10 +21,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Commit changes
-        run: |
-          git config --local user.name "github-actions"
-          git config --local user.email "action@github.com"
-          git add .
-          git commit -m "Build: Update compiled files" || echo "No changes to commit"
-          git push origin HEAD:gh-branch-name
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: build/libs/ # 根据你的构建输出路径进行修改
